@@ -5,15 +5,14 @@ import websockets
 
 from ocpp.v201 import call
 from ocpp.v201 import ChargePoint as cp
-from ocpp.v201.enums import RegistrationStatusType
-
+from ocpp.v201.enums import RegistrationStatusEnumType as RegistrationStatusType
 
 logging.basicConfig(level=logging.INFO)
 
 
 class ChargePointSimlator(cp):
     async def send_boot_notification(self):
-        request = call.BootNotificationPayload(
+        request = call.BootNotification(
             charging_station={
                 "serial_number": arguments["cp_serial"],
                 "model": arguments["cp_model"],
@@ -43,7 +42,7 @@ class ChargePointSimlator(cp):
 
     async def send_heartbeats(self, arguments):
         while True:
-            request = call.HeartbeatPayload()
+            request = call.Heartbeat()
             await self.call(request)
             await asyncio.sleep(arguments["heartbeat_interval"])
 
